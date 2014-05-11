@@ -22,11 +22,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-import android.view.LayoutInflater;
-import android.widget.FrameLayout;
 
 import com.google.android.glass.timeline.LiveCard;
-import com.google.android.glass.timeline.TimelineManager;
 
 /**
  * The main application service that manages the lifetime of the live card.
@@ -35,15 +32,12 @@ public class LevelService extends Service {
 
     private static final String LIVE_CARD_TAG = "level";
 
-    private TimelineManager mTimelineManager;
     private LiveCard mLiveCard;
     private LevelRenderer mRenderer;
 
     @Override
     public void onCreate() {
         super.onCreate();
-
-        mTimelineManager = TimelineManager.from(this);
     }
 
     @Override
@@ -56,7 +50,7 @@ public class LevelService extends Service {
         if (mLiveCard == null) {
             SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-            mLiveCard = mTimelineManager.createLiveCard(LIVE_CARD_TAG);
+            mLiveCard = new LiveCard(this, LIVE_CARD_TAG);
             mRenderer = new LevelRenderer(sensorManager, this);
 
             mLiveCard.setDirectRenderingEnabled(true);
